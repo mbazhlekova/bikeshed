@@ -1,0 +1,37 @@
+{
+  "name": "bikeshed",
+  "version": "1.0.0",
+  "description": "A voting app for pointless polls",
+  "main": "index.js",
+  "engines": {
+    "node": "^8.9.3"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon --verbose index.js",
+    "client": "cd ./client && yarn start",
+    "dev": "concurrently \"yarn server\" \"yarn client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mbazhlekova/bikeshed.git"
+  },
+  "keywords": [
+    "javascript",
+    "react",
+    "node"
+  ],
+  "author": "M. Bazhlekova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mbazhlekova/bikeshed/issues"
+  },
+  "homepage": "https://github.com/mbazhlekova/bikeshed#readme",
+  "dependencies": {
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.5"
+  },
+  "devDependencies": {
+    "prettier": "^1.13.5"
+  }
+}
