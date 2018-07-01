@@ -2,29 +2,16 @@ const path = require('path');
 const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
-const dev =
-  process.env.NODE_ENV !== 'production' && process.argv.indexOf('-p') === -1;
+const dev = process.env.NODE_ENV !== 'production';
 
 const HTMLWebpackPluginConfig = new HTMLWebpackPlugin({
-  template: path.join(__dirname, '/src/index.html'),
-  favicon: 'favicon.png',
+  template: 'index.html',
   filename: 'index.html',
-  inject: 'body',
+  inject: true,
 });
 
 const DefinePluginConfig = new webpack.DefinePlugin({
   'process.env.NODE_ENV': JSON.stringify('production'),
-});
-
-const UglifyJsPluginConfig = new webpack.optimize.UglifyJsPlugin({
-  beautify: false,
-  mangle: {
-    screw_ie8: true,
-  },
-  compress: {
-    screw_ie8: true,
-  },
-  comments: false,
 });
 
 module.exports = {
@@ -35,23 +22,19 @@ module.exports = {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
-    proxy: {
-      '/api/**': 'http://localhost:5000',
-      '/auth/github': 'http://localhost:5000',
-    },
     historyApiFallback: true,
-    disableHostCheck: true,
   },
-  entry: [
-    'react-hot-loader/patch',
-    'babel-polyfill',
-    path.join(__dirname, '/src/index.jsx'),
-  ],
+  entry: ['react-hot-loader/patch', path.join(__dirname, '/src/index.tsx')],
   module: {
-    loaders: [{
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loaders: ['babel-loader'],
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: 'babel-loader',
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader',
       },
       {
         test: /\.scss$/,
@@ -67,18 +50,14 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js'],
   },
   output: {
     filename: 'index.js',
     path: path.join(__dirname, '/build'),
-    publicPath: '/',
   },
-  plugins: dev ?
-    [
-      HTMLWebpackPluginConfig,
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin(),
-    ] :
-    [HTMLWebpackPluginConfig, DefinePluginConfig, UglifyJsPluginConfig],
+  mode: dev ? 'development' : 'production',
+  plugins: dev
+    ? [HTMLWebpackPluginConfig, new webpack.HotModuleReplacementPlugin()]
+    : [HTMLWebpackPluginConfig, DefinePluginConfig],
 };
