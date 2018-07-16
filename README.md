@@ -8,4 +8,4 @@ React, Redux, React Router, TypeScript, Jest, Enzyme, SCSS
 
 ## Back End
 
-Express, Node, Passport, GraphQL, PostgreSQL
+Spring Boot, JPA, Hibernate, PostgreSQL, GraphQL
